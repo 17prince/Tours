@@ -18,6 +18,7 @@ const reviewRoutes = require(`./routes/reviewRoutes`);
 const tourRoutes = require('./routes/tourRoutes');
 const userRoutes = require('./routes/userRoutes');
 const bookingRoutes = require(`./routes/bookingRoutes`);
+const bookingController = require('./Controllers/bookingController');
 
 const app = express();
 
@@ -46,7 +47,7 @@ app.use(cors());
 // opptions: is just like normal  http request like GET, POST , DELETE etc.
 app.opptions('*', cors());
 // and for perticular route
-app.options('/api/v1/tours/:id', cors());
+// app.options('/api/v1/tours/:id', cors());
 
 // Set HTTP security header
 app.use(helmet());
@@ -63,6 +64,15 @@ const limiter = rateLimit({
   message: 'Too many requrest from this IP. Please try again in an hour.',
 });
 app.use('/api', limiter);
+
+// adding webhook for payments
+app.post(
+  '/webhook-checkout',
+  express.raw({
+    type: 'application/json',
+  }),
+  bookingController.webhookCheckout
+);
 
 // body parser to read the req.body
 app.use(express.json({ limit: '10kb' }));
