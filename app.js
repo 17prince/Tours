@@ -45,7 +45,7 @@ app.use(cors());
 
 // PRE FLIGHT PHASE - for non standard headers
 // opptions: is just like normal  http request like GET, POST , DELETE etc.
-app.opptions('*', cors());
+app.options('*', cors());
 // and for perticular route
 // app.options('/api/v1/tours/:id', cors());
 
