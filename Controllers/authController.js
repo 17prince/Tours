@@ -12,7 +12,7 @@ const signToken = (id) =>
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
-const createAndSendToken = (user, statusCode, res) => {
+const createAndSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   res.cookie('jwt', token, {
@@ -47,7 +47,7 @@ exports.singup = catchAsync(async (req, res, next) => {
   const url = `${req.protocol}://${req.get('host')}/me`;
   await new Email(newUser, url).sendWelcome();
 
-  createAndSendToken(newUser, 200, res);
+  createAndSendToken(newUser, 200, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -66,7 +66,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // 3. if all good the send  token to the client
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, req, res);
 });
 
 // log out route
@@ -244,7 +244,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 3. Update changedPassowordAt propertry for the user
   // this step is done into usermodel with the help of middleware
   // 4. Log the user in, send JWT
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, req, res);
 });
 
 // Update the password for logged user
@@ -266,7 +266,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.confirmPassword = req.body.confirmPassword;
   await user.save();
   // 4. log user in and send jwt
-  createAndSendToken(user, 201, res);
+  createAndSendToken(user, 201, req, res);
 
   next();
 });
