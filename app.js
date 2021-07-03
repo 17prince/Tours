@@ -8,6 +8,7 @@ const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require(`./utiles/appError`);
 const globalErrorHandler = require(`./Controllers/errorController`);
@@ -31,6 +32,22 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 // GLOBAL MIDDLEWARE
+// setting cross-origin-requests for other domain to access this api
+app.use(cors());
+// This sets a key in the headers: Access-Control-Allow-Origin * .
+// if we want to give access to perticular domain like: api.natours.com, front-end: natours.com
+// then,
+// app.use(cors({
+//   origin: 'https://www.natour.com/'
+// }))
+// but these are limited for only for GET and POST request(simple request)
+
+// PRE FLIGHT PHASE - for non standard headers
+// opptions: is just like normal  http request like GET, POST , DELETE etc.
+app.opptions('*', cors());
+// and for perticular route
+app.options('/api/v1/tours/:id', cors());
+
 // Set HTTP security header
 app.use(helmet());
 
