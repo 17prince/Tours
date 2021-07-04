@@ -105,10 +105,16 @@ exports.getMyTour = catchAsync(async (req, res, next) => {
     });
   }
 
-  res.status(200).render('overview', {
-    title: 'My Tours',
-    tours,
-  });
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      'self https://*cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js'
+    )
+    .render('overview', {
+      title: 'My Tours',
+      tours,
+    });
 });
 
 // update-user-data
