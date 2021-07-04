@@ -7,6 +7,7 @@ const bookingController = require('../Controllers/bookingController');
 const routes = express.Router();
 
 // check if the user is logged in to render user photo and name
+routes.use(viewController.alert);
 
 routes.get('/', authController.isLogged, viewController.getOverview);
 routes.get('/tour/:tourname', authController.isLogged, viewController.getTour);

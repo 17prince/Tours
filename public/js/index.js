@@ -9,6 +9,7 @@ import { login, logout } from './login.js';
 import { updateSettings } from './updateSettings.js';
 import { bookTour } from './stripe.js';
 import { signUp } from './signup.js';
+import { showAlert } from './alert.js';
 
 // DOM Elements
 const mapBox = document.getElementById('map');
@@ -94,3 +95,6 @@ if (bookbtn) {
     bookTour(tourId);
   });
 }
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) showAlert('success', alertMessage, 20);
